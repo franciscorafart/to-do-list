@@ -3,11 +3,6 @@ listCount = 0;
 
 $(document).ready(function(){
 
-// $("ol").on("click","li",function(){
-//
-// });
-
-
 //add click listeners to buttons
 $("#inputButton").on('click',function(){
   var listElement = $("#inputText").val();
@@ -20,13 +15,14 @@ $("#inputButton").on('click',function(){
   updateCounter();
 });
 
+  // Remove all list elements when clicked
 $("#clearList").on('click',function(){
-  console.log("Clear list");
   $("li").remove();
   listCount = 0;
   updateCounter();
 });
 
+ //Clear completed list elements when clicked
 $("#clearComplete").on('click',function(){
 
   for (i=listCount-1;i>=0;i--){
@@ -40,50 +36,52 @@ $("#clearComplete").on('click',function(){
   }
 });
 
+ //With this function we add click  listeners to the li elements added
 function addListener(){
 
   //Remove click listeners from li's
   $('ol').off('click',"li>span");
+  
   //Add click listeners to li's
   $("ol").on('click','li>span',function(ev){
     ev.preventDefault();
     ev.stopPropagation();
+    
     //Toggle class -Change this
     console.log("cuantas veces span");
 
     $(this).parent().toggleClass("done");
   });
 
-  //Event loop --> read about
-
-  //Remove all click listeners
+  //Remove all click listeners before adding new ones
   $("ol").off("click","li .edit");
+  
   //add listener to internal buttons
   $("ol").on("click","li .edit",function(ev){
-    // $(this).parent().children().css("visibility","hidden");
+    
     ev.preventDefault();
     ev.stopPropagation();
-    //alt
+    
+    //Hide elements that are not the edit input when in edit mode
     $(this).parent().children().css("display","none");
-
+    //Add element to the ol
     $(this).parent().append("<form><input id='inputEdit' type='text' placeholder='Your edit here'></form>");
-
-
+  
+    //Function for 
     $(this).siblings("form").submit(function(ev){
       event.preventDefault();
           var newText = $(this).parent().children("form").children("input").val();
-          console.log(newText);
           $(this).parent().children().css("display","none");
           //change span text
           $(this).parent().children("span").text(newText);
-          // $(this).parent().children().css("visibility","visible");
           $(this).parent().children().css("display","inline");
-          $(this).parent().children("form").remove(); //what happens with remove method that it stops the code?
+          $(this).parent().children("form").remove();
     });
 
     console.log("Edit clicked");
   });
 
+  //Remove signle element from the li when the remove button is clicked
   $("li .remove").on("click",function(){
     $(this).parent().remove();
     listCount -=1;
@@ -97,5 +95,3 @@ function updateCounter(){
 
 });
 
-//Add click listeners to li elements
-//toggle classes (done) turn gray
